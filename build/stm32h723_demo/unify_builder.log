@@ -1,0 +1,81 @@
+[2025-10-02 17:28:03]	compilation failed at : "c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\bsp\usart_api.cpp", exit code: 1
+command: 
+  "D:\Keil5\ARM\ARMCLANG\bin\armclang.exe" --target=arm-arm-none-eabi -c -xc++ -std=c++11 -ICore/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc/Legacy -IMiddlewares/Third_Party/FreeRTOS/Source/include -IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -IMiddlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -IDrivers/CMSIS/Device/ST/STM32H7xx/Include -IDrivers/CMSIS/Include -Ipal -Ipal/bsp_api -Ipal/dal -Ipal/math_api -Ipal/osal -I.cmsis/include -IMDK-ARM/RTE/_stm32h723_demo -D"USE_FULL_LL_DRIVER" -D"USE_PWR_LDO_SUPPLY" -D"USE_HAL_DRIVER" -D"STM32H723xx" -mfloat-abi=hard -mfpu=fpv5-d16 -mcpu=cortex-m7 -mlittle-endian -Os -ffunction-sections -funsigned-char -fshort-enums -fshort-wchar -fno-rtti -w -g -o ./build/stm32h723_demo/.obj/bsp/usart_api.o -MMD ./bsp/usart_api.cpp
+   at unify_builder.Program.compileByMulThread(Int32 thrNum, CmdInfo[] cmds_, List`1 errLogs)
+   at unify_builder.Program.Main(String[] args_)
+---
+In file included from ./bsp/usart_api.cpp:1:
+pal/bsp_api\usart_api.hpp:35:35: error: no template named 'index_sequence' in namespace 'std'
+   35 |         []<std::size_t... I>(std::index_sequence<I...>) {
+      |                              ~~~~~^
+pal/bsp_api\usart_api.hpp:37:16: error: no member named 'make_index_sequence' in namespace 'std'
+   37 |         }(std::make_index_sequence<cfg::usart_en.size()>{});
+      |           ~~~~~^
+pal/bsp_api\usart_api.hpp:37:56: error: initializer list cannot be used on the right hand side of operator '>'
+   37 |         }(std::make_index_sequence<cfg::usart_en.size()>{});
+      |                                                        ^~~
+./bsp/usart_api.cpp:39:35: error: no template named 'index_sequence' in namespace 'std'
+   39 |         []<std::size_t... I>(std::index_sequence<I...>) {
+      |                              ~~~~~^
+./bsp/usart_api.cpp:41:16: error: no member named 'make_index_sequence' in namespace 'std'
+   41 |         }(std::make_index_sequence<cfg::usart_en.size()>{}),
+      |           ~~~~~^
+./bsp/usart_api.cpp:41:56: error: initializer list cannot be used on the right hand side of operator '>'
+   41 |         }(std::make_index_sequence<cfg::usart_en.size()>{}),
+      |                                                        ^~~
+./bsp/usart_api.cpp:39:9: error: a lambda expression may not appear inside of a constant expression
+   39 |         []<std::size_t... I>(std::index_sequence<I...>) {
+      |         ^
+./bsp/usart_api.cpp:54:10: error: variable has incomplete type 'void'
+   54 |     void instantiate_templates(std::index_sequence<I...>) {
+      |          ^
+./bsp/usart_api.cpp:54:37: error: no member named 'index_sequence' in namespace 'std'
+   54 |     void instantiate_templates(std::index_sequence<I...>) {
+      |                                ~~~~~^
+./bsp/usart_api.cpp:54:58: error: expected ';' after top level declarator
+   54 |     void instantiate_templates(std::index_sequence<I...>) {
+      |                                                          ^
+      |                                                          ;
+./bsp/usart_api.cpp:64:13: error: use of variable template 'instantiate_templates' requires template arguments
+   64 |             instantiate_templates(std::make_index_sequence<cfg::usart_en.size()>{});
+      |             ^
+./bsp/usart_api.cpp:54:10: note: template is declared here
+   53 |     template <std::size_t... I>
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   54 |     void instantiate_templates(std::index_sequence<I...>) {
+      |          ^
+./bsp/usart_api.cpp:64:40: error: no member named 'make_index_sequence' in namespace 'std'
+   64 |             instantiate_templates(std::make_index_sequence<cfg::usart_en.size()>{});
+      |                                   ~~~~~^
+./bsp/usart_api.cpp:64:80: error: initializer list cannot be used on the right hand side of operator '>'
+   64 |             instantiate_templates(std::make_index_sequence<cfg::usart_en.size()>{});
+      |                                                                                ^~~
+./bsp/usart_api.cpp:152:10: error: variable has incomplete type 'void'
+  152 |     void instantiate_irq_handlers(std::index_sequence<I...>) {
+      |          ^
+./bsp/usart_api.cpp:152:40: error: no member named 'index_sequence' in namespace 'std'
+  152 |     void instantiate_irq_handlers(std::index_sequence<I...>) {
+      |                                   ~~~~~^
+./bsp/usart_api.cpp:152:61: error: expected ';' after top level declarator
+  152 |     void instantiate_irq_handlers(std::index_sequence<I...>) {
+      |                                                             ^
+      |                                                             ;
+./bsp/usart_api.cpp:160:13: error: use of variable template 'instantiate_irq_handlers' requires template arguments
+  160 |             instantiate_irq_handlers(std::make_index_sequence<cfg::usart_en.size()>{});
+      |             ^
+./bsp/usart_api.cpp:152:10: note: template is declared here
+  151 |     template <std::size_t... I>
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  152 |     void instantiate_irq_handlers(std::index_sequence<I...>) {
+      |          ^
+./bsp/usart_api.cpp:160:43: error: no member named 'make_index_sequence' in namespace 'std'
+  160 |             instantiate_irq_handlers(std::make_index_sequence<cfg::usart_en.size()>{});
+      |                                      ~~~~~^
+./bsp/usart_api.cpp:160:83: error: initializer list cannot be used on the right hand side of operator '>'
+  160 |             instantiate_irq_handlers(std::make_index_sequence<cfg::usart_en.size()>{});
+      |                                                                                   ^~~
+19 errors generated.
+
+[2025-10-02 17:28:24]	[done]
+	build successfully !
+

@@ -1,8 +1,12 @@
 // bsp_cfg.hpp
 #pragma once
+
+
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
+
 
 namespace cfg {
     /******************************usart*******************************/
@@ -11,3 +15,5 @@ namespace cfg {
     inline constexpr std::size_t usart_tx_sz = 64;
     /******************************************************************/
 }  // namespace cfg
+
+
