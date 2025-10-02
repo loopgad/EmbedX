@@ -1,3 +1,5 @@
 # 忽略所有文件和文件夹
 /MDK-ARM/stm32h723_demo
-
+/build
+*.o
+*.d

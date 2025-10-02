@@ -43,3 +43,6 @@
 ./build/stm32h723_demo/.obj/Middlewares/Third_Party/FreeRTOS/Source/tasks.o
 ./build/stm32h723_demo/.obj/Middlewares/Third_Party/FreeRTOS/Source/timers.o
 ./build/stm32h723_demo/.obj/bsp/usart_api.o
+./build/stm32h723_demo/.obj/pal/math_api/src/matrix_api.o
+./build/stm32h723_demo/.obj/pal/math_api/src/vector_api.o
+./build/stm32h723_demo/.obj/test.o

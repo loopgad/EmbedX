@@ -47,4 +47,4 @@
   Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
   Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
   Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os2.h \
-  Core\Inc\memorymap.h Core\Inc\usart.h Core\Inc\gpio.h
+  Core\Inc\memorymap.h Core\Inc\usart.h Core\Inc\gpio.h pal\test.h

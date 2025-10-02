@@ -6,7 +6,8 @@ packDir: null
 srcDirs: []
 virtualFolder:
   name: <virtual_root>
-  files: []
+  files:
+    - path: test.cpp
   folders:
     - name: Application
       files: []
@@ -85,6 +86,11 @@ virtualFolder:
       folders: []
     - name: ::CMSIS
       files: []
+      folders: []
+    - name: math_api
+      files:
+        - path: pal/math_api/src/matrix_api.cpp
+        - path: pal/math_api/src/vector_api.cpp
       folders: []
 dependenceList: []
 outDir: build

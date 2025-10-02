@@ -1,4 +1,4 @@
---cpu Cortex-M7.fp.dp --scatter c:/Users/32806/Desktop/EmbededX/stm32h723/EmbedX/build/stm32h723_demo/stm32h723_demo.sct --diag_suppress=L6329 --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers
+--cpu Cortex-M7.fp.dp --scatter d:/STM32CubeMx_Projest/stm32h723_demo/build/stm32h723_demo/stm32h723_demo.sct --diag_suppress=L6329 --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers
 --list ./build/stm32h723_demo/stm32h723_demo.map
 ./build/stm32h723_demo/.obj/Core/Src/freertos.o
 ./build/stm32h723_demo/.obj/Core/Src/gpio.o
@@ -44,4 +44,7 @@
 ./build/stm32h723_demo/.obj/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
 ./build/stm32h723_demo/.obj/Middlewares/Third_Party/FreeRTOS/Source/tasks.o
 ./build/stm32h723_demo/.obj/Middlewares/Third_Party/FreeRTOS/Source/timers.o
-./build/stm32h723_demo/.obj/bsp/usart_api.o -o ./build/stm32h723_demo/stm32h723_demo.axf
+./build/stm32h723_demo/.obj/bsp/usart_api.o
+./build/stm32h723_demo/.obj/pal/math_api/src/matrix_api.o
+./build/stm32h723_demo/.obj/pal/math_api/src/vector_api.o
+./build/stm32h723_demo/.obj/test.o -o ./build/stm32h723_demo/stm32h723_demo.axf

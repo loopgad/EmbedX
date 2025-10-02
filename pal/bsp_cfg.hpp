@@ -1,12 +1,13 @@
 // bsp_cfg.hpp
 #pragma once
 
-
-
 #include <array>
 #include <cstddef>
 #include <cstdint>
 
+/*************************if use arm math******************************/
+// #define USE_ARM_MATH 
+/**********************************************************************/
 
 namespace cfg {
     /******************************usart*******************************/

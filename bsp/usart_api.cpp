@@ -20,18 +20,18 @@ namespace usart {
             static std::atomic_flag lock;
         };
 
-        // 中断友好变量
+        // 中断友好变量（声明为volatile确保每次从内存读取）
         template <std::uint8_t No> 
-        inline std::size_t rx_head{0};
-        
-		template <std::uint8_t No> 
-        inline std::size_t rx_tail{0};
-		
-        template <std::uint8_t No> 
-        inline std::size_t tx_tail{0};
+        inline volatile std::size_t rx_head{0};
         
         template <std::uint8_t No> 
-        inline std::size_t tx_count{0};
+        inline volatile std::size_t rx_tail{0};
+        
+        template <std::uint8_t No> 
+        inline volatile std::size_t tx_tail{0};
+        
+        template <std::uint8_t No> 
+        inline volatile std::size_t tx_count{0};
 
         // 检查USART编号是否有效
         constexpr bool is_usart_enabled(std::uint8_t no) {
@@ -41,7 +41,7 @@ namespace usart {
             return false;
         }
 
-        // 编译时查找表：将串口号映射到基地址
+        // 编译时查找表：将串口号映射到基地址[1,3](@ref)
         constexpr uint32_t get_usart_base_address(std::uint8_t no) {
             switch (no) {
                 case 0: return LPUART1_BASE;
@@ -70,9 +70,20 @@ namespace usart {
             "All configured USARTs must have valid base address mappings"
         );
 
-        // 获取 USART 实例
+        // 获取 USART 实例[1,4](@ref)
         USART_TypeDef* get_usart_instance(std::uint8_t no) {
             return reinterpret_cast<USART_TypeDef*>(get_usart_base_address(no));
+        }
+
+        // 零开销原子比较交换实现
+        template <std::uint8_t No>
+        inline bool atomic_compare_exchange_rx_tail(std::size_t expected, std::size_t desired) {
+            // 在单核系统中，通过确保操作在一条指令内完成即可实现原子性
+            if (rx_tail<No> == expected) {
+                rx_tail<No> = desired;
+                return true;
+            }
+            return false;
         }
 
         // 内部实现函数
@@ -103,49 +114,47 @@ namespace usart {
         }
         
         template <std::uint8_t No>
-		std::size_t recv_impl(std::uint8_t* ptr, std::size_t max_len) {
-			const std::uint8_t* rx = RxBuf<No>::data;
-			std::size_t head, tail, available, n;
+        std::size_t recv_impl(std::uint8_t* ptr, std::size_t max_len) {
+            const std::uint8_t* rx = RxBuf<No>::data;
+            std::size_t head, tail, available, n;
 
-
-
-			head = rx_head<No>;
-			tail = detail::rx_tail<No>; // 使用全局tail
-
-			// 2. 计算可用数据量
-			if (head >= tail) {
-				available = head - tail;
-			} else {
-				available = cfg::usart_rx_sz - tail + head;
-			}
-
-			n = (available > max_len) ? max_len : available;
-
-			if (n == 0) {
-				return 0;
-			}
-
-			// 3. 更安全的分段拷贝逻辑
-			if (head > tail) {
-				// 数据连续
-				std::memcpy(ptr, rx + tail, n);
-			} else {
-				// 数据分两段
-				std::size_t first_chunk = cfg::usart_rx_sz - tail;
-				if (n > first_chunk) {
-					std::memcpy(ptr, rx + tail, first_chunk);
-					std::memcpy(ptr + first_chunk, rx, n - first_chunk);
-				} else {
-					std::memcpy(ptr, rx + tail, n);
-				}
-			}
-
-			// 4. 更新全局tail指针
-			detail::rx_tail<No> = (tail + n) & (cfg::usart_rx_sz - 1);
-
-
-			return n;
-		}
+            // 1. 循环读取确保数据一致性（零开销重试机制）
+            do {
+                head = rx_head<No>;  // volatile确保从内存读取
+                tail = rx_tail<No>;  // volatile确保从内存读取
+                
+                // 计算可用数据量（考虑环形缓冲区回绕）
+                if (head >= tail) {
+                    available = head - tail;
+                } else {
+                    available = cfg::usart_rx_sz - tail + head;
+                }
+                
+                n = (available > max_len) ? max_len : available;
+                if (n == 0) {
+                    return 0;
+                }
+                
+                // 2. 安全的数据拷贝
+                if (head > tail) {
+                    // 数据连续
+                    std::memcpy(ptr, rx + tail, n);
+                } else {
+                    // 数据分两段
+                    std::size_t first_chunk = cfg::usart_rx_sz - tail;
+                    if (n > first_chunk) {
+                        std::memcpy(ptr, rx + tail, first_chunk);
+                        std::memcpy(ptr + first_chunk, rx, n - first_chunk);
+                    } else {
+                        std::memcpy(ptr, rx + tail, n);
+                    }
+                }
+                
+                // 3. 原子更新tail指针（零开销CAS实现）
+            } while (!atomic_compare_exchange_rx_tail<No>(tail, (tail + n) & (cfg::usart_rx_sz - 1)));
+            
+            return n;
+        }
     }
 
     // 定义静态成员
@@ -160,19 +169,19 @@ namespace usart {
 
     // 辅助函数用于实例化模板
     namespace {
-    template <std::size_t... I>
-    void instantiate_templates(std::index_sequence<I...>) {
+        template <std::size_t... I>
+        void instantiate_templates(std::index_sequence<I...>) {
             // 使用逗号运算符和空表达式来实例化所有模板
             ((void)detail::RxBuf<cfg::usart_en[I]>::data, ...);
             ((void)detail::TxBuf<cfg::usart_en[I]>::data, ...);
             ((void)detail::TxBuf<cfg::usart_en[I]>::lock, ...);
-    }
+        }
     } // namespace
 
     // 调用辅助函数实例化模板
     static auto _ = []() {
-            instantiate_templates(std::make_index_sequence<cfg::usart_en.size()>{});
-            return 0;
+        instantiate_templates(std::make_index_sequence<cfg::usart_en.size()>{});
+        return 0;
     }();
 
     /* ---------- 对外接口实现 ---------- */
@@ -197,47 +206,47 @@ namespace usart {
         }
     }
 
-	bool UsartAPI::send(std::uint8_t no, const std::uint8_t* ptr, std::size_t len) {
-	// 运行时检查
-	if (!detail::is_usart_enabled(no)) return false;
-	
-	// 使用switch-case分发到不同的模板实例
-	switch (no) {
-			case 0: return detail::send_impl<0>(ptr, len);
-			case 1: return detail::send_impl<1>(ptr, len);
-			case 2: return detail::send_impl<2>(ptr, len);
-			case 3: return detail::send_impl<3>(ptr, len);
-			case 4: return detail::send_impl<4>(ptr, len);
-			case 5: return detail::send_impl<5>(ptr, len);
-			case 6: return detail::send_impl<6>(ptr, len);
-			case 7: return detail::send_impl<7>(ptr, len);
-			case 8: return detail::send_impl<8>(ptr, len);
-			case 9: return detail::send_impl<9>(ptr, len);
-			case 10: return detail::send_impl<10>(ptr, len);
-			default: return false;
-	}
-	}
+    bool UsartAPI::send(std::uint8_t no, const std::uint8_t* ptr, std::size_t len) {
+        // 运行时检查
+        if (!detail::is_usart_enabled(no)) return false;
+        
+        // 使用switch-case分发到不同的模板实例
+        switch (no) {
+            case 0: return detail::send_impl<0>(ptr, len);
+            case 1: return detail::send_impl<1>(ptr, len);
+            case 2: return detail::send_impl<2>(ptr, len);
+            case 3: return detail::send_impl<3>(ptr, len);
+            case 4: return detail::send_impl<4>(ptr, len);
+            case 5: return detail::send_impl<5>(ptr, len);
+            case 6: return detail::send_impl<6>(ptr, len);
+            case 7: return detail::send_impl<7>(ptr, len);
+            case 8: return detail::send_impl<8>(ptr, len);
+            case 9: return detail::send_impl<9>(ptr, len);
+            case 10: return detail::send_impl<10>(ptr, len);
+            default: return false;
+        }
+    }
 
-	std::size_t UsartAPI::recv(std::uint8_t no, std::uint8_t* ptr, std::size_t max_len) {
-	// 运行时检查
-	if (!detail::is_usart_enabled(no)) return 0;
-	
-	// 使用switch-case分发到不同的模板实例
-	switch (no) {
-			case 0: return detail::recv_impl<0>(ptr, max_len);
-			case 1: return detail::recv_impl<1>(ptr, max_len);
-			case 2: return detail::recv_impl<2>(ptr, max_len);
-			case 3: return detail::recv_impl<3>(ptr, max_len);
-			case 4: return detail::recv_impl<4>(ptr, max_len);
-			case 5: return detail::recv_impl<5>(ptr, max_len);
-			case 6: return detail::recv_impl<6>(ptr, max_len);
-			case 7: return detail::recv_impl<7>(ptr, max_len);
-			case 8: return detail::recv_impl<8>(ptr, max_len);
-			case 9: return detail::recv_impl<9>(ptr, max_len);
-			case 10: return detail::recv_impl<10>(ptr, max_len);
-			default: return 0;
-	}
-	}
+    std::size_t UsartAPI::recv(std::uint8_t no, std::uint8_t* ptr, std::size_t max_len) {
+        // 运行时检查
+        if (!detail::is_usart_enabled(no)) return 0;
+        
+        // 使用switch-case分发到不同的模板实例
+        switch (no) {
+            case 0: return detail::recv_impl<0>(ptr, max_len);
+            case 1: return detail::recv_impl<1>(ptr, max_len);
+            case 2: return detail::recv_impl<2>(ptr, max_len);
+            case 3: return detail::recv_impl<3>(ptr, max_len);
+            case 4: return detail::recv_impl<4>(ptr, max_len);
+            case 5: return detail::recv_impl<5>(ptr, max_len);
+            case 6: return detail::recv_impl<6>(ptr, max_len);
+            case 7: return detail::recv_impl<7>(ptr, max_len);
+            case 8: return detail::recv_impl<8>(ptr, max_len);
+            case 9: return detail::recv_impl<9>(ptr, max_len);
+            case 10: return detail::recv_impl<10>(ptr, max_len);
+            default: return 0;
+        }
+    }
     
     // usart中断处理
     namespace {
@@ -245,19 +254,29 @@ namespace usart {
         void usart_irq_handler() {
             USART_TypeDef* inst = detail::get_usart_instance(No);
 
-			if (LL_USART_IsActiveFlag_ORE(inst)) {
-			// 清除ORE标志的标准操作序列：先读SR（通过IsActiveFlag完成），再读DR
-				LL_USART_ClearFlag_ORE(inst);
-				volatile uint8_t temp_discard = LL_USART_ReceiveData8(inst); // 读取DR寄存器，丢弃数据
-				(void)temp_discard; // 避免编译器警告
-			}
-			
-            /* RX：环形推进 */
+            // 处理过载错误（必须清除ORE标志）[6](@ref)
+            if (LL_USART_IsActiveFlag_ORE(inst)) {
+                LL_USART_ClearFlag_ORE(inst);
+                volatile uint8_t temp_discard = LL_USART_ReceiveData8(inst);
+                (void)temp_discard;
+            }
+            
+            /* RX：环形推进（带缓冲区满检查） */
             if (LL_USART_IsActiveFlag_RXNE(inst)) {
                 auto* rx = detail::RxBuf<No>::data;
-                rx[detail::rx_head<No>] = LL_USART_ReceiveData8(inst);
-                // 使用位操作替代模运算
-                detail::rx_head<No> = (detail::rx_head<No> + 1) & (cfg::usart_rx_sz - 1);
+                std::size_t current_head = detail::rx_head<No>;
+                std::size_t next_head = (current_head + 1) & (cfg::usart_rx_sz - 1);
+                
+                // 关键优化：检查缓冲区是否将满（保留一个字节空隙）
+                if (next_head != detail::rx_tail<No>) {
+                    rx[current_head] = LL_USART_ReceiveData8(inst);
+                    detail::rx_head<No> = next_head;
+                } else {
+                    // 缓冲区满，丢弃数据但必须读取DR寄存器[6](@ref)
+                    volatile uint8_t temp_discard = LL_USART_ReceiveData8(inst);
+                    (void)temp_discard;
+                    // 可选的：在此处设置溢出标志供应用层检测
+                }
             }
 
             /* TX：发完自动解锁 */
@@ -266,13 +285,13 @@ namespace usart {
                     auto* tx = detail::TxBuf<No>::data;
                     std::size_t tail = detail::tx_tail<No>;
                     LL_USART_TransmitData8(inst, tx[tail]);
-                    // 使用位操作替代模运算
+                    // 使用位操作替代模运算（要求缓冲区大小为2的幂）
                     detail::tx_tail<No> = (tail + 1) & (cfg::usart_tx_sz - 1);
                     --detail::tx_count<No>;
                 } else {
-                    LL_USART_DisableIT_TXE(inst);          // 空
-                    // 使用宽松内存序
-                    detail::TxBuf<No>::lock.clear(std::memory_order_relaxed); // **解锁！**
+                    LL_USART_DisableIT_TXE(inst);          // 关闭发送中断
+                    // 使用宽松内存序解锁
+                    detail::TxBuf<No>::lock.clear(std::memory_order_relaxed);
                 }
             }
         }

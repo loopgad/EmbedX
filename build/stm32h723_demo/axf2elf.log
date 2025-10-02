@@ -1,4 +1,5 @@
-arm-none-eabi-objcopy --update-section ER_IROM1="C:\Users\32806\AppData\Local\Temp\\stm32h723_demo_HcgweoSC.bin" "c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\build\stm32h723_demo/stm32h723_demo.axf" "c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\build\stm32h723_demo/stm32h723_demo.elf"
+arm-none-eabi-objcopy --update-section ER_IROM1="C:\Users\32806\AppData\Local\Temp\\stm32h723_demo_DedejET2.bin" "d:\STM32CubeMx_Projest\stm32h723_demo\build\stm32h723_demo/stm32h723_demo.axf" "d:\STM32CubeMx_Projest\stm32h723_demo\build\stm32h723_demo/stm32h723_demo.elf"
 
-arm-none-eabi-objcopy: c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\build\stm32h723_demo/stm32h723_demo.elf: warning: allocated section `RW_IRAM2' not in segment
+arm-none-eabi-objcopy: d:\STM32CubeMx_Projest\stm32h723_demo\build\stm32h723_demo/stm32h723_demo.elf: warning: allocated section `RW_IRAM1' not in segment
+arm-none-eabi-objcopy: d:\STM32CubeMx_Projest\stm32h723_demo\build\stm32h723_demo/stm32h723_demo.elf: warning: allocated section `RW_IRAM2' not in segment
 
