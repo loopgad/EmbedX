@@ -1,7 +1,7 @@
 CompileFlags:
   Add:
-    - -ID:\Keil_v5\ARM\ARMCLANG/include
-    - -ID:\Keil_v5\ARM\ARMCLANG/include/libcxx
+    - -ID:\Keil5\ARM\ARMCLANG/include
+    - -ID:\Keil5\ARM\ARMCLANG/include/libcxx
   Remove: []
   CompilationDatabase: ./build/stm32h723_demo
-  Compiler: D:\Keil_v5\ARM\ARMCLANG\bin\armclang.exe
+  Compiler: D:\Keil5\ARM\ARMCLANG\bin\armclang.exe

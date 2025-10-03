@@ -1,5 +1,7 @@
 ./build/stm32h723_demo/.obj/bsp/usart_api.o: bsp\usart_api.cpp \
   pal\bsp_api\usart_api.hpp pal\bsp_api\..\bsp_cfg.hpp \
+  pal\math_api\math_lib.hpp pal\math_api\inc\vector_api.hpp \
+  pal\math_api\inc\matrix_api.hpp \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h \
   Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h \
   Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h723xx.h \

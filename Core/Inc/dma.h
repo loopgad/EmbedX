@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    memorymap.h
+  * @file    dma.h
   * @brief   This file contains all the function prototypes for
-  *          the memorymap.c file
+  *          the dma.c file
   ******************************************************************************
   * @attention
   *
@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MEMORYMAP_H__
-#define __MEMORYMAP_H__
+#ifndef __DMA_H__
+#define __DMA_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +27,8 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
+/* DMA memory to memory transfer handles -------------------------------------*/
 
 /* USER CODE BEGIN Includes */
 
@@ -36,6 +38,8 @@ extern "C" {
 
 /* USER CODE END Private defines */
 
+void MX_DMA_Init(void);
+
 /* USER CODE BEGIN Prototypes */
 
 /* USER CODE END Prototypes */
@@ -44,5 +48,5 @@ extern "C" {
 }
 #endif
 
-#endif /* __MEMORYMAP_H__ */
+#endif /* __DMA_H__ */
 

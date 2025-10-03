@@ -23,5 +23,14 @@ namespace usart {
 
         /* 接收：从环形缓冲区拷出 */
         static std::size_t recv(std::uint8_t no, std::uint8_t* ptr, std::size_t max_len);
+        
+        /* 获取可读数据量 */
+        static std::size_t available(std::uint8_t no);
+        
+        /* 单字节FIFO接口 - 放入一个字节 */
+        [[nodiscard]] static bool putc(std::uint8_t no, std::uint8_t byte);
+        
+        /* 单字节FIFO接口 - 取出一个字节 */
+        [[nodiscard]] static bool getc(std::uint8_t no, std::uint8_t& byte);
     };
 }  // namespace usart

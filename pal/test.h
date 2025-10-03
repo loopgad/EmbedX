@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-void get_buf(void);
+void test_fn(void);
 
 
 #ifdef __cplusplus

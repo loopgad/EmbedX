@@ -2,12 +2,12 @@
     "name": "stm32h723_demo",
     "target": "stm32h723_demo",
     "toolchain": "AC6",
-    "toolchainLocation": "D:\\Keil_v5\\ARM\\ARMCLANG",
+    "toolchainLocation": "D:\\Keil5\\ARM\\ARMCLANG",
     "toolchainCfgFile": "c:\\Users\\32806\\.vscode\\extensions\\cl.eide-3.26.0\\res\\data\\models/arm.v6.model.json",
     "buildMode": "fast|multhread",
     "showRepathOnLog": true,
-    "threadNum": 22,
-    "rootDir": "d:\\STM32CubeMx_Projest\\stm32h723_demo",
+    "threadNum": 16,
+    "rootDir": "c:\\Users\\32806\\Desktop\\EmbededX\\stm32h723\\EmbedX",
     "dumpPath": "build\\stm32h723_demo",
     "outDir": "build\\stm32h723_demo",
     "ram": 262144,
@@ -124,21 +124,21 @@
             "misc-controls": "--diag_suppress=L6329",
             "output-format": "elf",
             "link-scatter": [
-                "d:/STM32CubeMx_Projest/stm32h723_demo/build/stm32h723_demo/stm32h723_demo.sct"
+                "c:/Users/32806/Desktop/EmbededX/stm32h723/EmbedX/build/stm32h723_demo/stm32h723_demo.sct"
             ]
         }
     },
     "env": {
         "KEIL_OUTPUT_DIR": "stm32h723_demo",
-        "workspaceFolder": "d:\\STM32CubeMx_Projest\\stm32h723_demo",
-        "workspaceFolderBasename": "stm32h723_demo",
-        "OutDir": "d:\\STM32CubeMx_Projest\\stm32h723_demo\\build\\stm32h723_demo",
+        "workspaceFolder": "c:\\Users\\32806\\Desktop\\EmbededX\\stm32h723\\EmbedX",
+        "workspaceFolderBasename": "EmbedX",
+        "OutDir": "c:\\Users\\32806\\Desktop\\EmbededX\\stm32h723\\EmbedX\\build\\stm32h723_demo",
         "OutDirRoot": "build",
         "OutDirBase": "build\\stm32h723_demo",
         "ProjectName": "stm32h723_demo",
         "ConfigName": "stm32h723_demo",
-        "ProjectRoot": "d:\\STM32CubeMx_Projest\\stm32h723_demo",
-        "ExecutableName": "d:\\STM32CubeMx_Projest\\stm32h723_demo\\build\\stm32h723_demo\\stm32h723_demo",
+        "ProjectRoot": "c:\\Users\\32806\\Desktop\\EmbededX\\stm32h723\\EmbedX",
+        "ExecutableName": "c:\\Users\\32806\\Desktop\\EmbededX\\stm32h723\\EmbedX\\build\\stm32h723_demo\\stm32h723_demo",
         "ChipPackDir": "",
         "ChipName": "",
         "SYS_Platform": "win32",
@@ -151,7 +151,7 @@
         "EIDE_BINARIES_VER": "12.1.1",
         "EIDE_MSYS": "C:\\Users\\32806\\.eide\\bin\\builder\\msys\\bin",
         "EIDE_PY3_CMD": "C:\\Users\\32806\\.eide\\bin\\python36\\python3.exe",
-        "ToolchainRoot": "D:\\Keil_v5\\ARM\\ARMCLANG"
+        "ToolchainRoot": "D:\\Keil5\\ARM\\ARMCLANG"
     },
     "sysPaths": []
 }
