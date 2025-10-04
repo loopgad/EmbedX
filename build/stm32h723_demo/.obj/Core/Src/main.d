@@ -25,6 +25,8 @@
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr_ex.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_tim.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_tim_ex.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_uart.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_uart_ex.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_rcc.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_bus.h \
@@ -47,4 +49,4 @@
   Middlewares\Third_Party\FreeRTOS\Source\include\task.h \
   Middlewares\Third_Party\FreeRTOS\Source\include\list.h \
   Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS_V2\cmsis_os2.h \
-  Core\Inc\memorymap.h Core\Inc\usart.h Core\Inc\gpio.h pal\test.h
+  Core\Inc\dma.h Core\Inc\usart.h Core\Inc\gpio.h pal\test.h

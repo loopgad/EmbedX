@@ -1,6 +1,154 @@
-[2025-10-03 14:37:40]	[done]
+[2025-10-04 15:17:55]	[done]
 	build successfully !
 
-[2025-10-03 14:57:51]	[done]
+[2025-10-04 15:41:56]	compilation failed at : "c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\pal\math_api\src\vector_api.cpp", exit code: 1
+command: 
+  "D:\Keil5\ARM\ARMCLANG\bin\armclang.exe" --target=arm-arm-none-eabi -c -xc++ -std=c++17 -ICore/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc/Legacy -IMiddlewares/Third_Party/FreeRTOS/Source/include -IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -IMiddlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -IDrivers/CMSIS/Device/ST/STM32H7xx/Include -IDrivers/CMSIS/Include -Ipal -Ipal/bsp_api -Ipal/dal -Ipal/math_api -Ipal/osal -I.cmsis/include -IMDK-ARM/RTE/_stm32h723_demo -D"USE_FULL_LL_DRIVER" -D"USE_PWR_LDO_SUPPLY" -D"USE_HAL_DRIVER" -D"STM32H723xx" -mfloat-abi=hard -mfpu=fpv5-d16 -mcpu=cortex-m7 -mlittle-endian -Os -ffunction-sections -funsigned-char -fshort-enums -fshort-wchar -fno-rtti -w -g -o ./build/stm32h723_demo/.obj/pal/math_api/src/vector_api.o -MMD ./pal/math_api/src/vector_api.cpp
+   at unify_builder.Program.compileByMulThread(Int32 thrNum, CmdInfo[] cmds_, List`1 errLogs)
+   at unify_builder.Program.Main(String[] args_)
+---
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorScalarMulExpr<math::Vector<2>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:66:12: note: in instantiation of function template specialization 'math::Vector<2>::Vector<math::VectorScalarMulExpr<math::Vector<2>>>' requested here
+   66 |     return Vector<N>(a * (1.0f / n));
+      |            ^
+./pal/math_api/src/vector_api.cpp:101:20: note: in instantiation of function template specialization 'math::normalize<2U>' requested here
+  101 | template Vector<2> normalize(const Vector<2>&);
+      |                    ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorScalarMulExpr<math::Vector<3>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:66:12: note: in instantiation of function template specialization 'math::Vector<3>::Vector<math::VectorScalarMulExpr<math::Vector<3>>>' requested here
+   66 |     return Vector<N>(a * (1.0f / n));
+      |            ^
+./pal/math_api/src/vector_api.cpp:102:20: note: in instantiation of function template specialization 'math::normalize<3U>' requested here
+  102 | template Vector<3> normalize(const Vector<3>&);
+      |                    ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorScalarMulExpr<math::Vector<4>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:66:12: note: in instantiation of function template specialization 'math::Vector<4>::Vector<math::VectorScalarMulExpr<math::Vector<4>>>' requested here
+   66 |     return Vector<N>(a * (1.0f / n));
+      |            ^
+./pal/math_api/src/vector_api.cpp:103:20: note: in instantiation of function template specialization 'math::normalize<4U>' requested here
+  103 | template Vector<4> normalize(const Vector<4>&);
+      |                    ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorSubExpr<math::Vector<2>, math::Vector<2>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:88:22: note: in instantiation of function template specialization 'math::Vector<2>::Vector<math::VectorSubExpr<math::Vector<2>, math::Vector<2>>>' requested here
+   88 |     Vector<N> diff = Vector<N>(a - b);
+      |                      ^
+./pal/math_api/src/vector_api.cpp:105:16: note: in instantiation of function template specialization 'math::distance<2U>' requested here
+  105 | template float distance(const Vector<2>&, const Vector<2>&);
+      |                ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorSubExpr<math::Vector<3>, math::Vector<3>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:88:22: note: in instantiation of function template specialization 'math::Vector<3>::Vector<math::VectorSubExpr<math::Vector<3>, math::Vector<3>>>' requested here
+   88 |     Vector<N> diff = Vector<N>(a - b);
+      |                      ^
+./pal/math_api/src/vector_api.cpp:106:16: note: in instantiation of function template specialization 'math::distance<3U>' requested here
+  106 | template float distance(const Vector<3>&, const Vector<3>&);
+      |                ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorSubExpr<math::Vector<4>, math::Vector<4>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:88:22: note: in instantiation of function template specialization 'math::Vector<4>::Vector<math::VectorSubExpr<math::Vector<4>, math::Vector<4>>>' requested here
+   88 |     Vector<N> diff = Vector<N>(a - b);
+      |                      ^
+./pal/math_api/src/vector_api.cpp:107:16: note: in instantiation of function template specialization 'math::distance<4U>' requested here
+  107 | template float distance(const Vector<4>&, const Vector<4>&);
+      |                ^
+6 errors generated.
+
+[2025-10-04 15:45:35]	compilation failed at : "c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\pal\math_api\src\vector_api.cpp", exit code: 1
+command: 
+  "D:\Keil5\ARM\ARMCLANG\bin\armclang.exe" --target=arm-arm-none-eabi -c -xc++ -std=c++17 -ICore/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc/Legacy -IMiddlewares/Third_Party/FreeRTOS/Source/include -IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -IMiddlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -IDrivers/CMSIS/Device/ST/STM32H7xx/Include -IDrivers/CMSIS/Include -Ipal -Ipal/bsp_api -Ipal/dal -Ipal/math_api -Ipal/osal -I.cmsis/include -IMDK-ARM/RTE/_stm32h723_demo -D"USE_FULL_LL_DRIVER" -D"USE_PWR_LDO_SUPPLY" -D"USE_HAL_DRIVER" -D"STM32H723xx" -mfloat-abi=hard -mfpu=fpv5-d16 -mcpu=cortex-m7 -mlittle-endian -Os -ffunction-sections -funsigned-char -fshort-enums -fshort-wchar -fno-rtti -w -g -o ./build/stm32h723_demo/.obj/pal/math_api/src/vector_api.o -MMD ./pal/math_api/src/vector_api.cpp
+   at unify_builder.Program.compileByMulThread(Int32 thrNum, CmdInfo[] cmds_, List`1 errLogs)
+   at unify_builder.Program.Main(String[] args_)
+---
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorScalarMulExpr<math::Vector<2>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:66:12: note: in instantiation of function template specialization 'math::Vector<2>::Vector<math::VectorScalarMulExpr<math::Vector<2>>>' requested here
+   66 |     return Vector<N>(a * (1.0f / n));
+      |            ^
+./pal/math_api/src/vector_api.cpp:101:20: note: in instantiation of function template specialization 'math::normalize<2U>' requested here
+  101 | template Vector<2> normalize(const Vector<2>&);
+      |                    ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorScalarMulExpr<math::Vector<3>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:66:12: note: in instantiation of function template specialization 'math::Vector<3>::Vector<math::VectorScalarMulExpr<math::Vector<3>>>' requested here
+   66 |     return Vector<N>(a * (1.0f / n));
+      |            ^
+./pal/math_api/src/vector_api.cpp:102:20: note: in instantiation of function template specialization 'math::normalize<3U>' requested here
+  102 | template Vector<3> normalize(const Vector<3>&);
+      |                    ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorScalarMulExpr<math::Vector<4>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:66:12: note: in instantiation of function template specialization 'math::Vector<4>::Vector<math::VectorScalarMulExpr<math::Vector<4>>>' requested here
+   66 |     return Vector<N>(a * (1.0f / n));
+      |            ^
+./pal/math_api/src/vector_api.cpp:103:20: note: in instantiation of function template specialization 'math::normalize<4U>' requested here
+  103 | template Vector<4> normalize(const Vector<4>&);
+      |                    ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorSubExpr<math::Vector<2>, math::Vector<2>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:88:22: note: in instantiation of function template specialization 'math::Vector<2>::Vector<math::VectorSubExpr<math::Vector<2>, math::Vector<2>>>' requested here
+   88 |     Vector<N> diff = Vector<N>(a - b);
+      |                      ^
+./pal/math_api/src/vector_api.cpp:105:16: note: in instantiation of function template specialization 'math::distance<2U>' requested here
+  105 | template float distance(const Vector<2>&, const Vector<2>&);
+      |                ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorSubExpr<math::Vector<3>, math::Vector<3>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:88:22: note: in instantiation of function template specialization 'math::Vector<3>::Vector<math::VectorSubExpr<math::Vector<3>, math::Vector<3>>>' requested here
+   88 |     Vector<N> diff = Vector<N>(a - b);
+      |                      ^
+./pal/math_api/src/vector_api.cpp:106:16: note: in instantiation of function template specialization 'math::distance<3U>' requested here
+  106 | template float distance(const Vector<3>&, const Vector<3>&);
+      |                ^
+In file included from ./pal/math_api/src/vector_api.cpp:2:
+In file included from ./pal/math_api/src\../math_lib.hpp:77:
+./pal/math_api/src\..\inc/vector_api.hpp:28:43: error: cannot convert 'math::VectorSubExpr<math::Vector<4>, math::Vector<4>>' to 'float' without a conversion operator
+   28 |     constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+./pal/math_api/src/vector_api.cpp:88:22: note: in instantiation of function template specialization 'math::Vector<4>::Vector<math::VectorSubExpr<math::Vector<4>, math::Vector<4>>>' requested here
+   88 |     Vector<N> diff = Vector<N>(a - b);
+      |                      ^
+./pal/math_api/src/vector_api.cpp:107:16: note: in instantiation of function template specialization 'math::distance<4U>' requested here
+  107 | template float distance(const Vector<4>&, const Vector<4>&);
+      |                ^
+6 errors generated.
+
+[2025-10-04 15:47:56]	[done]
 	build successfully !
 

@@ -1,16 +1,16 @@
 ./build/stm32h723_demo/.obj/bsp/usart_api.o: bsp\usart_api.cpp \
   pal\bsp_api\usart_api.hpp pal\bsp_api\..\bsp_cfg.hpp \
-  pal\math_api\math_lib.hpp pal\math_api\inc\vector_api.hpp \
-  pal\math_api\inc\matrix_api.hpp \
-  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h \
-  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h \
-  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h723xx.h \
-  Drivers\CMSIS\Include\core_cm7.h \
-  Drivers\CMSIS\Device\ST\STM32H7xx\Include\system_stm32h7xx.h \
+  pal\math_api\math_lib.hpp pal\bsp_cfg.hpp \
+  pal\math_api\inc\vector_api.hpp pal\math_api\inc\matrix_api.hpp \
+  pal\math_api\inc\..\math_lib.hpp Core\Inc\usart.h Core\Inc\main.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h \
   Core\Inc\stm32h7xx_hal_conf.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_rcc.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_def.h \
+  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h7xx.h \
+  Drivers\CMSIS\Device\ST\STM32H7xx\Include\stm32h723xx.h \
+  Drivers\CMSIS\Include\core_cm7.h \
+  Drivers\CMSIS\Device\ST\STM32H7xx\Include\system_stm32h7xx.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_rcc_ex.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_gpio.h \
@@ -28,4 +28,17 @@
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_pwr_ex.h \
   Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_tim.h \
-  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_tim_ex.h
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_tim_ex.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_uart.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal_uart_ex.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_rcc.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_bus.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_cortex.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_system.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_utils.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_pwr.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_dma.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_dmamux.h \
+  Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_exti.h

@@ -1,12 +1,11 @@
-// matrix.hpp - 纯矩阵数学接口，编译期维度检查
+// matrix.hpp - 简化矩阵数学接口
 #pragma once
 #include <cstddef>
-#include <array>
-#include "vector_api.hpp"
+#include "../math_lib.hpp"
 
 namespace math {
 
-// 矩阵表达式模板基类[3](@ref)
+// 矩阵表达式模板基类
 template<typename Expr>
 struct MatrixExpr {
     constexpr auto operator()(size_t row, size_t col) const { 
@@ -20,17 +19,26 @@ struct MatrixExpr {
     }
 };
 
-// 矩阵存储类
+// 主矩阵类
 template<size_t Rows, size_t Cols>
-struct MatrixStorage {
-    std::array<float, Rows * Cols> data;
+struct Matrix : public MatrixExpr<Matrix<Rows, Cols>> {
+    float data[Rows * Cols];
     
-    constexpr MatrixStorage() = default;
+    constexpr Matrix() {
+        for(size_t i = 0; i < Rows * Cols; ++i) data[i] = 0.0f;
+    }
     
     template<typename... Args>
-    constexpr MatrixStorage(Args... args) : data{static_cast<float>(args)...} {
-        static_assert(sizeof...(Args) == Rows * Cols, 
-                     "Initializer size must match matrix dimension");
+    constexpr Matrix(Args... args) : data{static_cast<float>(args)...} {}
+    
+    // 从表达式构造
+    template<typename Expr>
+    constexpr Matrix(const MatrixExpr<Expr>& expr) {
+        for (size_t i = 0; i < Rows; ++i) {
+            for (size_t j = 0; j < Cols; ++j) {
+                data[i * Cols + j] = expr(i, j);
+            }
+        }
     }
     
     constexpr float& operator()(size_t row, size_t col) { 
@@ -43,38 +51,13 @@ struct MatrixStorage {
     
     constexpr size_t rows() const { return Rows; }
     constexpr size_t cols() const { return Cols; }
-};
-
-// 主矩阵类
-template<size_t Rows, size_t Cols>
-struct Matrix : public MatrixExpr<Matrix<Rows, Cols>>, private MatrixStorage<Rows, Cols> {
-    using Storage = MatrixStorage<Rows, Cols>;
-    
-    constexpr Matrix() = default;
-    
-    template<typename... Args>
-    constexpr Matrix(Args... args) : Storage(args...) {}
-    
-    // 从表达式构造
-    template<typename Expr>
-    constexpr Matrix(const MatrixExpr<Expr>& expr) {
-        for (size_t i = 0; i < Rows; ++i) {
-            for (size_t j = 0; j < Cols; ++j) {
-                Storage::data[i * Cols + j] = expr(i, j);
-            }
-        }
-    }
-    
-    using Storage::operator();
-    using Storage::rows;
-    using Storage::cols;
     
     // 赋值运算符支持表达式模板
     template<typename Expr>
     constexpr Matrix& operator=(const MatrixExpr<Expr>& expr) {
         for (size_t i = 0; i < Rows; ++i) {
             for (size_t j = 0; j < Cols; ++j) {
-                Storage::data[i * Cols + j] = expr(i, j);
+                data[i * Cols + j] = expr(i, j);
             }
         }
         return *this;
@@ -87,10 +70,7 @@ struct MatrixAddExpr : public MatrixExpr<MatrixAddExpr<E1, E2, Rows, Cols>> {
     const E1& lhs;
     const E2& rhs;
     
-    constexpr MatrixAddExpr(const E1& l, const E2& r) : lhs(l), rhs(r) {
-        static_assert(E1().rows() == E2().rows() && E1().cols() == E2().cols(),
-                     "Matrix dimensions must match for addition");
-    }
+    constexpr MatrixAddExpr(const E1& l, const E2& r) : lhs(l), rhs(r) {}
     
     constexpr auto operator()(size_t row, size_t col) const { 
         return lhs(row, col) + rhs(row, col); 
@@ -100,16 +80,13 @@ struct MatrixAddExpr : public MatrixExpr<MatrixAddExpr<E1, E2, Rows, Cols>> {
     constexpr size_t cols() const { return Cols; }
 };
 
-// 矩阵乘法表达式模板 - 编译期维度检查[1](@ref)
+// 矩阵乘法表达式模板
 template<typename E1, typename E2, size_t M, size_t N, size_t P>
 struct MatrixMulExpr : public MatrixExpr<MatrixMulExpr<E1, E2, M, N, P>> {
     const E1& lhs;
     const E2& rhs;
     
-    constexpr MatrixMulExpr(const E1& l, const E2& r) : lhs(l), rhs(r) {
-        static_assert(E1().cols() == E2().rows(), 
-                     "Inner matrix dimensions must match for multiplication");
-    }
+    constexpr MatrixMulExpr(const E1& l, const E2& r) : lhs(l), rhs(r) {}
     
     constexpr auto operator()(size_t row, size_t col) const {
         float sum = 0.0f;
@@ -125,14 +102,11 @@ struct MatrixMulExpr : public MatrixExpr<MatrixMulExpr<E1, E2, M, N, P>> {
 
 // 矩阵向量乘法表达式模板
 template<typename MatExpr, typename VecExpr, size_t Rows, size_t Cols>
-struct MatrixVectorMulExpr : public VectorExpr<MatrixVectorMulExpr<MatExpr, VecExpr, Rows, Cols>> {
+struct MatrixVectorMulExpr : public math::VectorExpr<MatrixVectorMulExpr<MatExpr, VecExpr, Rows, Cols>> {
     const MatExpr& mat;
     const VecExpr& vec;
     
-    constexpr MatrixVectorMulExpr(const MatExpr& m, const VecExpr& v) : mat(m), vec(v) {
-        static_assert(MatExpr().cols() == VecExpr().size(),
-                     "Matrix columns must equal vector dimension for multiplication");
-    }
+    constexpr MatrixVectorMulExpr(const MatExpr& m, const VecExpr& v) : mat(m), vec(v) {}
     
     constexpr auto operator[](size_t row) const {
         float sum = 0.0f;
@@ -166,10 +140,10 @@ constexpr auto operator*(const MatrixExpr<Matrix<M, N>>& lhs,
 
 template<size_t Rows, size_t Cols>
 constexpr auto operator*(const MatrixExpr<Matrix<Rows, Cols>>& mat,
-                        const VectorExpr<Vector<Cols>>& vec) {
-    return MatrixVectorMulExpr<Matrix<Rows, Cols>, Vector<Cols>, Rows, Cols>(
+                        const math::VectorExpr<math::Vector<Cols>>& vec) {
+    return MatrixVectorMulExpr<Matrix<Rows, Cols>, math::Vector<Cols>, Rows, Cols>(
         static_cast<const Matrix<Rows, Cols>&>(mat),
-        static_cast<const Vector<Cols>&>(vec)
+        static_cast<const math::Vector<Cols>&>(vec)
     );
 }
 
@@ -185,5 +159,10 @@ float determinant(const Matrix<N, N>& mat);
 
 template<size_t N>
 Matrix<N, N> identity();
+
+// 便捷类型别名
+using Matrix2x2 = Matrix<2, 2>;
+using Matrix3x3 = Matrix<3, 3>;
+using Matrix4x4 = Matrix<4, 4>;
 
 } // namespace math

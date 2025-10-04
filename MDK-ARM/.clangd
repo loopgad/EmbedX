@@ -1,8 +1,0 @@
-CompileFlags:
-  Add:
-    - --query-driver=D:\Keil5\ARM\ARMCLANG\bin\armclang.exe
-    - -ID:\Keil5\ARM\ARMCLANG/include
-    - -ID:\Keil5\ARM\ARMCLANG/include/libcxx
-  Remove: []
-  CompilationDatabase: ./build/stm32h723_demo
-  Compiler: D:\Keil5\ARM\ARMCLANG\bin\armclang.exe

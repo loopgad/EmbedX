@@ -1,9 +1,9 @@
 --cpu Cortex-M7.fp.dp --scatter c:/Users/32806/Desktop/EmbededX/stm32h723/EmbedX/build/stm32h723_demo/stm32h723_demo.sct --diag_suppress=L6329 --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers
 --list ./build/stm32h723_demo/stm32h723_demo.map
+./build/stm32h723_demo/.obj/Core/Src/dma.o
 ./build/stm32h723_demo/.obj/Core/Src/freertos.o
 ./build/stm32h723_demo/.obj/Core/Src/gpio.o
 ./build/stm32h723_demo/.obj/Core/Src/main.o
-./build/stm32h723_demo/.obj/Core/Src/memorymap.o
 ./build/stm32h723_demo/.obj/Core/Src/stm32h7xx_hal_msp.o
 ./build/stm32h723_demo/.obj/Core/Src/stm32h7xx_hal_timebase_tim.o
 ./build/stm32h723_demo/.obj/Core/Src/stm32h7xx_it.o
@@ -27,6 +27,8 @@
 ./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
 ./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
 ./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
+./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
+./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
 ./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_dma.o
 ./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_exti.o
 ./build/stm32h723_demo/.obj/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_gpio.o

@@ -1,12 +1,11 @@
-// vector.hpp - 优化后的纯向量数学接口
+// vector.hpp - 简化向量数学接口
 #pragma once
 #include <cstddef>
-#include <array>
 #include <type_traits>
 
 namespace math {
 
-// 向量表达式模板基类 - 实现零成本抽象
+// 向量表达式模板基类
 template<typename Expr>
 struct VectorExpr {
     constexpr auto operator[](size_t i) const { 
@@ -15,87 +14,71 @@ struct VectorExpr {
     constexpr size_t size() const { 
         return static_cast<const Expr&>(*this).size(); 
     }
-};
-
-// 向量存储类
-template<size_t N>
-struct VectorStorage {
-    std::array<float, N> data;
     
-    constexpr VectorStorage() = default;
-    
-    template<typename... Args>
-    constexpr VectorStorage(Args... args) : data{static_cast<float>(args)...} {
-        static_assert(sizeof...(Args) == N, "Initializer size must match vector dimension");
+    // 添加转换操作符，允许表达式模板隐式转换为float
+    constexpr operator float() const {
+        static_assert(Expr::size() == 1, "Only single-element vectors can be converted to float");
+        return static_cast<const Expr&>(*this)[0];
     }
-    
-    constexpr float& operator[](size_t i) { return data[i]; }
-    constexpr const float& operator[](size_t i) const { return data[i]; }
-    constexpr size_t size() const { return N; }
-    
-    // 提供数据访问接口
-    constexpr float* data_ptr() { return data.data(); }
-    constexpr const float* data_ptr() const { return data.data(); }
 };
 
 // 主向量类
 template<size_t N>
-struct Vector : public VectorExpr<Vector<N>>, private VectorStorage<N> {
-    using Storage = VectorStorage<N>;
+struct Vector : public VectorExpr<Vector<N>> {
+    float data[N];
     
-    // 构造函数的编译期检查
-    constexpr Vector() = default;
+    constexpr Vector() {
+        for(size_t i = 0; i < N; ++i) data[i] = 0.0f;
+    }
     
+    // 使用SFINAE限制参数类型，只允许算术类型
     template<typename... Args, typename = std::enable_if_t<(std::is_arithmetic_v<Args> && ...)>>
-    constexpr Vector(Args... args) : Storage(args...) {}
+    constexpr Vector(Args... args) : data{static_cast<float>(args)...} {}
     
     // 从表达式构造
     template<typename Expr>
     constexpr Vector(const VectorExpr<Expr>& expr) {
         for (size_t i = 0; i < N; ++i) {
-            Storage::data[i] = expr[i];
+            data[i] = expr[i];
         }
     }
     
-    using Storage::operator[];
-    using Storage::size;
-    using Storage::data_ptr;
+    constexpr float& operator[](size_t i) { return data[i]; }
+    constexpr const float& operator[](size_t i) const { return data[i]; }
+    static constexpr size_t size() { return N; }
+    
+    // 提供数据访问接口
+    constexpr float* data_ptr() { return data; }
+    constexpr const float* data_ptr() const { return data; }
     
     // 赋值运算符支持表达式模板
     template<typename Expr>
     constexpr Vector& operator=(const VectorExpr<Expr>& expr) {
         for (size_t i = 0; i < N; ++i) {
-            Storage::data[i] = expr[i];
+            data[i] = expr[i];
         }
         return *this;
     }
     
-    // 添加常用向量运算作为成员函数
+    // 向量运算作为成员函数
     constexpr Vector& operator+=(const Vector& rhs) {
-        for(size_t i = 0; i < N; ++i) Storage::data[i] += rhs[i];
+        for(size_t i = 0; i < N; ++i) data[i] += rhs[i];
         return *this;
     }
     
     constexpr Vector& operator-=(const Vector& rhs) {
-        for(size_t i = 0; i < N; ++i) Storage::data[i] -= rhs[i];
+        for(size_t i = 0; i < N; ++i) data[i] -= rhs[i];
         return *this;
     }
     
     constexpr Vector& operator*=(float scalar) {
-        for(size_t i = 0; i < N; ++i) Storage::data[i] *= scalar;
+        for(size_t i = 0; i < N; ++i) data[i] *= scalar;
         return *this;
     }
     
     constexpr Vector& operator/=(float scalar) {
-        for(size_t i = 0; i < N; ++i) Storage::data[i] /= scalar;
+        for(size_t i = 0; i < N; ++i) data[i] /= scalar;
         return *this;
-    }
-    
-    // 点积作为成员函数
-    constexpr float dot(const Vector& rhs) const {
-        float result = 0;
-        for(size_t i = 0; i < N; ++i) result += Storage::data[i] * rhs[i];
-        return result;
     }
 };
 
@@ -158,7 +141,7 @@ struct VectorNegExpr : public VectorExpr<VectorNegExpr<E>> {
     constexpr size_t size() const { return vec.size(); }
 };
 
-// 运算符重载 - 返回表达式模板对象
+// 运算符重载
 template<typename E1, typename E2>
 constexpr auto operator+(const VectorExpr<E1>& lhs, const VectorExpr<E2>& rhs) {
     return VectorAddExpr<E1, E2>(
@@ -209,13 +192,8 @@ float norm(const Vector<N>& a);
 template<size_t N>
 Vector<N> normalize(const Vector<N>& a);
 
-// 3D向量叉积函数
 template<size_t N>
 Vector<N> cross(const Vector<N>& a, const Vector<N>& b);
-
-// 特化声明 - 只有3D向量有叉积
-template<>
-Vector<3> cross<3>(const Vector<3>& a, const Vector<3>& b);
 
 template<size_t N>
 float distance(const Vector<N>& a, const Vector<N>& b);

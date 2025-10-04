@@ -6,8 +6,7 @@ packDir: null
 srcDirs: []
 virtualFolder:
   name: <virtual_root>
-  files:
-    - path: test.cpp
+  files: []
   folders:
     - name: Application
       files: []
@@ -21,10 +20,11 @@ virtualFolder:
           folders:
             - name: Core
               files:
+                - path: test.cpp
                 - path: Core/Src/main.c
                 - path: Core/Src/gpio.c
                 - path: Core/Src/freertos.c
-                - path: Core/Src/memorymap.c
+                - path: Core/Src/dma.c
                 - path: Core/Src/usart.c
                 - path: Core/Src/stm32h7xx_it.c
                 - path: Core/Src/stm32h7xx_hal_msp.c
@@ -59,6 +59,8 @@ virtualFolder:
             - path: Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usart.c
             - path: Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_gpio.c
             - path: Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_dma.c
+            - path: Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c
+            - path: Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c
           folders: []
         - name: CMSIS
           files:
@@ -84,18 +86,18 @@ virtualFolder:
       files:
         - path: bsp/usart_api.cpp
       folders: []
-    - name: ::CMSIS
-      files: []
-      folders: []
     - name: math_api
       files:
         - path: pal/math_api/src/matrix_api.cpp
         - path: pal/math_api/src/vector_api.cpp
       folders: []
+    - name: ::CMSIS
+      files: []
+      folders: []
 dependenceList: []
 outDir: build
 miscInfo:
-  uid: b3e9c47cbb51a0a15f0a779e3e8d7b00
+  uid: b099bdfd222ded39a62e544de68f5699
 targets:
   stm32h723_demo:
     cppPreprocessAttrs:
@@ -233,9 +235,4 @@ targets:
         otherCmds: ""
         proType: 1
         speed: 8000
-      OpenOCD:
-        baseAddr: "0x08000000"
-        bin: ""
-        interface: cmsis-dap
-        target: stm32h7x
-    uploader: OpenOCD
+    uploader: JLink
