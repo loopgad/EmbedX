@@ -10,31 +10,44 @@
 
 namespace math {
 
-// 矩阵-向量乘法
+// 矩阵-向量乘法  (Rows×Cols) * (Cols×1) -> (Rows×1)
 template<size_t Rows, size_t Cols>
-Vector<Rows> operator*(const Matrix<Rows, Cols>& mat, const Vector<Cols>& vec) {
+Vector<Rows> operator*(const Matrix<Rows,Cols>& mat, const Vector<Cols>& vec)
+{
     if constexpr (math::use_arm_math) {
 #ifdef USE_ARM_MATH
+        /* 把向量包装成Cols×1矩阵 */
+        arm_matrix_instance_f32 A, B, C;
+        alignas(8) float tmpOut[Rows];          // 存结果
+        alignas(8) float tmpIn [Cols];          // 可写副本
+        std::copy(vec.data_ptr(), vec.data_ptr()+Cols, tmpIn);
+
+        arm_mat_init_f32(&A, Rows, Cols, const_cast<float*>(mat.data_ptr()));
+        arm_mat_init_f32(&B, Cols, 1, tmpIn);
+        arm_mat_init_f32(&C, Rows, 1, tmpOut);
+
+        arm_mat_mult_f32(&A, &B, &C);          // CMSIS-DSP 矩阵×矩阵
+
         Vector<Rows> result;
-        arm_matrix_instance_f32 matInst;
-        arm_mat_init_f32(&matInst, Rows, Cols, const_cast<float*>(mat.data_ptr()));
-        arm_mat_vec_mult_f32(&matInst, const_cast<float*>(vec.data_ptr()), result.data_ptr());
+        std::copy(tmpOut, tmpOut+Rows, result.data_ptr());
         return result;
 #else
+        /*  Fallback：朴素循环  */
         Vector<Rows> result;
-        for(size_t i = 0; i < Rows; ++i) {
-            float sum = 0.0f;
-            for(size_t j = 0; j < Cols; ++j) sum += mat(i, j) * vec[j];
-            result[i] = sum;
+        for (size_t i = 0; i < Rows; ++i) {
+            float s = 0.0f;
+            for (size_t j = 0; j < Cols; ++j) s += mat(i,j)*vec[j];
+            result[i] = s;
         }
         return result;
 #endif
     } else {
+        /*  非ARM_MATH路径  */
         Vector<Rows> result;
-        for(size_t i = 0; i < Rows; ++i) {
-            float sum = 0.0f;
-            for(size_t j = 0; j < Cols; ++j) sum += mat(i, j) * vec[j];
-            result[i] = sum;
+        for (size_t i = 0; i < Rows; ++i) {
+            float s = 0.0f;
+            for (size_t j = 0; j < Cols; ++j) s += mat(i,j)*vec[j];
+            result[i] = s;
         }
         return result;
     }

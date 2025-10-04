@@ -152,3 +152,150 @@ In file included from ./pal/math_api/src\../math_lib.hpp:77:
 [2025-10-04 15:47:56]	[done]
 	build successfully !
 
+[2025-10-04 16:08:18]	compilation failed at : "c:\Users\32806\Desktop\EmbededX\stm32h723\EmbedX\Core\Src\main.c", exit code: 1
+command: 
+  "D:\Keil5\ARM\ARMCLANG\bin\armclang.exe" --target=arm-arm-none-eabi -c -xc -std=c11 -ICore/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc -IDrivers/STM32H7xx_HAL_Driver/Inc/Legacy -IMiddlewares/Third_Party/FreeRTOS/Source/include -IMiddlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -IMiddlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -IDrivers/CMSIS/Device/ST/STM32H7xx/Include -IDrivers/CMSIS/Include -Ipal -Ipal/bsp_api -Ipal/dal -Ipal/math_api -Ipal/osal -I.cmsis/include -IMDK-ARM/RTE/_stm32h723_demo -D"USE_FULL_LL_DRIVER" -D"USE_PWR_LDO_SUPPLY" -D"USE_HAL_DRIVER" -D"STM32H723xx" -mfloat-abi=hard -mfpu=fpv5-d16 -mcpu=cortex-m7 -mlittle-endian -Os -ffunction-sections -funsigned-char -fshort-enums -fshort-wchar -fno-rtti -w -g -o ./build/stm32h723_demo/.obj/Core/Src/main.o -MMD ./Core/Src/main.c
+   at unify_builder.Program.compileByMulThread(Int32 thrNum, CmdInfo[] cmds_, List`1 errLogs)
+   at unify_builder.Program.Main(String[] args_)
+---
+./Core/Src/main.c:77:3: error: expected function body after function declarator
+   77 |   MPU_Config();
+      |   ^
+./Core/Src/main.c:82:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   82 |   HAL_Init();
+      |   ^
+      |   int
+./Core/Src/main.c:82:3: error: conflicting types for 'HAL_Init'
+Drivers/STM32H7xx_HAL_Driver/Inc\stm32h7xx_hal.h:1065:19: note: previous declaration is here
+ 1065 | HAL_StatusTypeDef HAL_Init(void);
+      |                   ^
+./Core/Src/main.c:89:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   89 |   SystemClock_Config();
+      |   ^
+      |   int
+./Core/Src/main.c:89:3: error: conflicting types for 'SystemClock_Config'
+./Core/Src/main.c:53:6: note: previous declaration is here
+   53 | void SystemClock_Config(void);
+      |      ^
+./Core/Src/main.c:96:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   96 |   MX_GPIO_Init();
+      |   ^
+      |   int
+./Core/Src/main.c:96:3: error: conflicting types for 'MX_GPIO_Init'
+Core/Inc\gpio.h:39:6: note: previous declaration is here
+   39 | void MX_GPIO_Init(void);
+      |      ^
+./Core/Src/main.c:97:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   97 |   MX_DMA_Init();
+      |   ^
+      |   int
+./Core/Src/main.c:97:3: error: conflicting types for 'MX_DMA_Init'
+Core/Inc\dma.h:41:6: note: previous declaration is here
+   41 | void MX_DMA_Init(void);
+      |      ^
+./Core/Src/main.c:98:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   98 |   MX_USART1_UART_Init();
+      |   ^
+      |   int
+./Core/Src/main.c:98:3: error: conflicting types for 'MX_USART1_UART_Init'
+Core/Inc\usart.h:41:6: note: previous declaration is here
+   41 | void MX_USART1_UART_Init(void);
+      |      ^
+./Core/Src/main.c:99:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+   99 |   MX_USART2_UART_Init();
+      |   ^
+      |   int
+./Core/Src/main.c:99:3: error: conflicting types for 'MX_USART2_UART_Init'
+Core/Inc\usart.h:42:6: note: previous declaration is here
+   42 | void MX_USART2_UART_Init(void);
+      |      ^
+./Core/Src/main.c:100:3: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+  100 |   MX_USART6_UART_Init();
+      |   ^
+      |   int
+./Core/Src/main.c:100:3: error: conflicting types for 'MX_USART6_UART_Init'
+Core/Inc\usart.h:43:6: note: previous declaration is here
+   43 | void MX_USART6_UART_Init(void);
+      |      ^
+./Core/Src/main.c:102:26: error: expected ')'
+  102 |   LL_USART_EnableIT_RXNE(USART1);
+      |                          ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:32: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2088:35: note: expanded from macro 'D2_APB2PERIPH_BASE'
+ 2088 | #define D2_APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
+      |                                   ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2070:36: note: expanded from macro 'PERIPH_BASE'
+ 2070 | #define PERIPH_BASE               (0x40000000UL) /*!< Base address of : AHB/APB Peripherals                                                   */
+      |                                    ^
+./Core/Src/main.c:102:26: note: to match this '('
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:32: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2088:35: note: expanded from macro 'D2_APB2PERIPH_BASE'
+ 2088 | #define D2_APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
+      |                                   ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2070:35: note: expanded from macro 'PERIPH_BASE'
+ 2070 | #define PERIPH_BASE               (0x40000000UL) /*!< Base address of : AHB/APB Peripherals                                                   */
+      |                                   ^
+./Core/Src/main.c:102:26: error: expected ')'
+  102 |   LL_USART_EnableIT_RXNE(USART1);
+      |                          ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:32: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2088:47: note: expanded from macro 'D2_APB2PERIPH_BASE'
+ 2088 | #define D2_APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
+      |                                               ^
+./Core/Src/main.c:102:26: note: to match this '('
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:32: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2088:34: note: expanded from macro 'D2_APB2PERIPH_BASE'
+ 2088 | #define D2_APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
+      |                                  ^
+./Core/Src/main.c:102:26: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+  102 |   LL_USART_EnableIT_RXNE(USART1);
+      |                          ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:32: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2088:35: note: expanded from macro 'D2_APB2PERIPH_BASE'
+ 2088 | #define D2_APB2PERIPH_BASE       (PERIPH_BASE + 0x00010000UL)
+      |                                   ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2070:36: note: expanded from macro 'PERIPH_BASE'
+ 2070 | #define PERIPH_BASE               (0x40000000UL) /*!< Base address of : AHB/APB Peripherals                                                   */
+      |                                    ^
+./Core/Src/main.c:102:26: error: expected ')'
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:51: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                                                   ^
+./Core/Src/main.c:102:26: note: to match this '('
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2483:48: note: expanded from macro 'USART1'
+ 2483 | #define USART1              ((USART_TypeDef *) USART1_BASE)
+      |                                                ^
+Drivers/CMSIS/Device/ST/STM32H7xx/Include\stm32h723xx.h:2230:31: note: expanded from macro 'USART1_BASE'
+ 2230 | #define USART1_BASE           (D2_APB2PERIPH_BASE + 0x1000UL)
+      |                               ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+
